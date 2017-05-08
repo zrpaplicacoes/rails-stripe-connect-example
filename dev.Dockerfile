@@ -1,9 +1,9 @@
-FROM ruby:2.3.0-alpine
+FROM ruby:2.1-alpine
 
 MAINTAINER ZRP Aplicacoes Informaticas LTDA <zrp@zrp.com.br>
 
 ENV BUILD_PACKAGES="curl-dev curl build-base" \
-    RUNTIME_PACKAGES="git zlib-dev libxml2-dev libxslt-dev tzdata yaml-dev yaml nodejs sqlite autoconf gcc g++ imagemagick-dev libtool make" \
+    RUNTIME_PACKAGES="git zlib-dev libxml2-dev libxslt-dev tzdata yaml-dev yaml nodejs openssl sqlite autoconf gcc g++ imagemagick-dev libtool make" \
     RACK_ENV=development RAILS_ENV=development \
     APP_PATH=/srv/app PATH=/srv/app/bin:$PATH \
     BUNDLE_GEMFILE=/srv/app/Gemfile BUNDLE_PATH=/srv/bin/app/bundle
