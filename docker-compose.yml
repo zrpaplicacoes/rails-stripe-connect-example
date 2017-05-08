@@ -1,0 +1,36 @@
+version: '2.1'
+
+volumes:
+  bundler-data:
+    driver: local
+
+services:
+  app: &base
+    hostname: base
+    image: demo/rails-stripe-connect-example:nightly
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - .:/srv/app
+      - bundler-data:/srv/bin/app/bundle
+    environment: &env
+      DATABASE_URL: postgres://postgres:1x2y3z4u@db.local:5432/befine_dev
+      REDIS_URL: redis://redis.local:6379
+      SIDEKIQ_CONCURRENCY: 5
+      SIDEKIQ_TIMEOUT: 10
+      RACK_ENV: development
+      RAILS_ENV: development
+    ports: ['80:3000']
+    stdin_open: true
+    tty: true
+    command: bundle exec rails server -p 3000 -b 0.0.0.0
+
+  bundler:
+    <<: *base
+    hostname: builder
+    command: bundle install -j4 --retry 3
+    ports: []
+    environment:
+      <<: *env
+
